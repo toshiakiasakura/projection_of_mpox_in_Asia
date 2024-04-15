@@ -52,10 +52,10 @@ ENV JULIA_PROJECT=.julia::/tmp/julia-tmp/
 # R packages
 RUN mamba install -c conda-forge r-ggpattern=1.0.1 r-igraph=1.4.1 \
     r-ggraph=2.1.0 r-ggmap=3.0.1 r-ggnewscale=0.4.8 r-maps=3.4.1 \
-    r-geojsonio r-sf \
+    r-geojsonio==0.11.3 r-sf==1.0-12 \
     -y
-RUN mamba install -c conda-forge r-ggalluvial -y
-RUN mamba install -c r r-cmocean -y
+RUN mamba install -c conda-forge r-ggalluvial==0.12.5 -y
+RUN mamba install -c r r-cmocean==0.3-1 -y
 RUN pip install polars
 # [Optional] If your pip requirements rarely change, uncomment this section to add them to the image.
 # COPY requirements.txt /tmp/pip-tmp/
