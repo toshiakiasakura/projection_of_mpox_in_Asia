@@ -1,0 +1,18 @@
+version: "3"
+services:
+  lab:
+    image: jupyter_projname:v01
+    container_name: project_mpox_Asia_container
+    build:
+        context: .
+        dockerfile: ./.devcontainer/Dockerfile
+
+    ports:
+      - "8888:8888" # http://localhost:8880/lab to launch Jupyter Lab
+
+    volumes:
+      - .:/home/jovyan/work
+    environment:
+      - JULIA_NUM_THREADS=12
+      - JULIA_DEPOT_PATH=.julia::/opt/julia
+    command: start.sh jupyter lab
