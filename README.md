@@ -5,7 +5,7 @@ This repository contains the data and code for our study.
 
 Note: Since the intermediate files for reproducing figures/tables are
 very large and we cannot upload international flight volume data, some code will cause errors.
-Therefore, this repository is prepared to share the implementation code.
+Therefore, this repository is prepared for the implementation part to be checked.
 
 ### Data used in our study
 Our fitting process and simulations with meta-population model used the following data sets.
