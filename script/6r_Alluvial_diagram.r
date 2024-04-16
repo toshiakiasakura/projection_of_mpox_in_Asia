@@ -345,7 +345,7 @@ ggplot(dat_allu,
     ) +
     ggrepel::geom_text_repel(
         aes(label=ifelse(as.numeric(gen_index) == 3, as.character(import), NA)),
-        stat="stratum", decreasing=TRUE, size=size, nudge_x=+0.5, min.y=ymin
+        stat="stratum", decreasing=TRUE, size=size, nudge_x=+0.45, min.y=ymin
     ) +
     ggrepel::geom_text_repel(
         aes(label=ifelse(as.numeric(gen_index) == 4, as.character(import), NA)),

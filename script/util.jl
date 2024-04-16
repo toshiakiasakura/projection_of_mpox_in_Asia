@@ -153,7 +153,7 @@ function read_constant_values()
 end
 
 function read_observed_imp_data()::DataFrame
-    path = "../data/mpox_Asia_importation_date_AT.xlsx"
+    path = "../data/mpox_Asia_importation_date.xlsx"
     df_obs = @pipe XLSX.readtable(path, "Sheet2", "A:F"; first_row=1) |>
                    DataFrame .|>
                    coalesce(_, 0)
