@@ -1,7 +1,11 @@
 # Projecting international mpox spread in Asia: ongoing global health risk
 
-This repository contains the data and code for our study.
-<!--- for our paper: [Add citation info] -->
+This repository contains the data and code for our paper:
+> Toshiaki R. Asakura, Sung-mok Jung, Hiroaki Murayama, Cyrus Ghaznavi, Haruka
+> Sakamoto, Ayaka Teshima, Fuminari Miura, Akira Endo (2024).
+> Projecting international mpox spread in Asia:
+> ongoing global health risk. medRxiv [Preprint].
+> doi: [10.1101/2024.04.17.24305832](https://doi.org/10.1101/2024.04.17.24305832)
 
 Note: Since the intermediate files for reproducing figures/tables are
 very large and we cannot upload international flight volume data, some code will cause errors.
@@ -24,7 +28,3 @@ It takes around 1-2 days to complete each scenario in  `2j_AFP_MCMC.jl`, and thi
 
 ### License
 [MIT](/LICENSE)
-
-### Author list
-Toshiaki R. Asakura, Sung-mok Jung, Hiroaki Murayama, Cyrus Ghaznavi,
-Haruka Sakamoto, Ayaka Teshima, Fuminari Miura, Akira Endo
