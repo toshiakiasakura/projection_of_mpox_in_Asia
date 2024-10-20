@@ -6,6 +6,9 @@ using WeibullParetoDist
 
 include("util.jl")
 
+NATSAL1Y_PARMS = [0.10, 0.77]
+NATSAL4W_PARMS = [0.16, 0.87529]
+
 rand_binom(n,p) = rand(Binomial(n,p))
 
 """Return scaled left truncated Weibull distributions.

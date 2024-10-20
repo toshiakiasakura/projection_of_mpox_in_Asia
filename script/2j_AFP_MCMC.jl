@@ -36,7 +36,7 @@ sim_jpn_4w_IP14 = "../tmp_afp/natsal4w_inf14_sim_jpn.jld2"
 
 # Natsal 1y data, 10 day IP. 
 path = fit_β(;
-    α=0.10, κ=0.77, γ2=1/10, 
+    α=NATSAL1Y_PARMS[1], κ=NATSAL1Y_PARMS[2], γ2=1/10, 
     days=8, max_ind_k=50,
     iterations=iterations,
     file_prefix="natsal1y_posterior_inf7",
@@ -45,7 +45,7 @@ path = fit_β(;
 
 # Natsal 4w data, 10 day IP. 
 path = fit_β(;
-    α=0.16, κ=0.87529, γ2=1/10, 
+    α=NATSAL4W_PARMS[1], κ=NATSAL4W_PARMS[2], γ2=1/10, 
     days=8, max_ind_k=42,
     iterations=iterations,
     file_prefix="natsal4w_posterior_inf10",
@@ -54,7 +54,7 @@ path = fit_β(;
 
 # Natsal 4w data, 7 day IP. 
 path = fit_β(;
-    α=0.16, κ=0.87529, γ2=1/7, 
+    α=NATSAL4W_PARMS[1], κ=NATSAL4W_PARMS[2], γ2=1/7, 
     days=8, max_ind_k=42,
     iterations=iterations,
     file_prefix="natsal4w_posterior_inf10",
@@ -63,7 +63,7 @@ path = fit_β(;
 
 # Natsal 4w data, 14 day IP. 
 path = fit_β(;
-    α=0.16, κ=0.87529, γ2=1/14, 
+    α=NATSAL4W_PARMS[1], κ=NATSAL4W_PARMS[2], γ2=1/14, 
     days=8, max_ind_k=42,
     iterations=iterations,
     file_prefix="natsal4w_posterior_inf10",
@@ -121,23 +121,6 @@ run_and_save_intercountry_model(sim_jpn_dir_4w_IP14; Korea_cond=true)
 
 
 # ## Thinned samples
-
-function show_traceplot(path; n_burn=2000)
-    res_dic = deserialize(path)
-    chn = res_dic["chn"]
-    # n_burn = length(chn)*0.1 |> floor |> Int64
-    chn = chn[(n_burn+1):10:end]
-    chn |> display
-    qs = quantile(chn; q=[0.025, 0.5, 0.975]) |> DataFrame
-    q025, q50, q975 = @pipe qs[1,2:4] |> values 
-    q025_r, q50_r, q975_r = round.([q025, q50, q975], digits=2)
-    println("$(q50_r) ($(q025_r), $(q975_r))")
-    SAR_025 = round(1 - exp(-q025), digits=3)
-    SAR_50 = round(1 - exp(-q50), digits=3)
-    SAR_975 = round(1 - exp(-q975), digits=3)
-    println("$(SAR_50*100) ($(SAR_025*100), $(SAR_975*100))")
-    plot(chn, fmt=:png, left_margin=15Plots.pt, figtype=:png, bottom_margin=6Plots.mm) |> display
-end
 
 chn = show_traceplot(path5_IP10_trace)
 

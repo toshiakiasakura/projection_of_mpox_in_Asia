@@ -2,7 +2,7 @@
 
 julia_version = "1.8.3"
 manifest_format = "2.0"
-project_hash = "364a4597a218ae655cb4ae9502e942db5f50ad66"
+project_hash = "d345f16f4a7bac65d1e52ef1828ed8c117fb01f2"
 
 [[deps.ADTypes]]
 git-tree-sha1 = "dcfdf328328f2645531c4ddebf841228aef74130"
@@ -200,6 +200,11 @@ git-tree-sha1 = "1568b28f91293458345dabba6a5ea3f183250a61"
 uuid = "324d7699-5711-5eae-9e2f-1d82baa6b597"
 version = "0.10.8"
 
+[[deps.Chain]]
+git-tree-sha1 = "9ae9be75ad8ad9d26395bf625dea9beac6d519f1"
+uuid = "8be319e6-bccf-4806-a6f7-6fae938471bc"
+version = "0.6.0"
+
 [[deps.ChainRules]]
 deps = ["Adapt", "ChainRulesCore", "Compat", "Distributed", "GPUArraysCore", "IrrationalConstants", "LinearAlgebra", "Random", "RealDot", "SparseArrays", "Statistics", "StructArrays"]
 git-tree-sha1 = "61549d9b52c88df34d21bd306dba1d43bb039c87"
@@ -330,6 +335,12 @@ deps = ["Compat", "DataAPI", "Future", "InlineStrings", "InvertedIndices", "Iter
 git-tree-sha1 = "aa51303df86f8626a962fccb878430cdb0a97eee"
 uuid = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 version = "1.5.0"
+
+[[deps.DataFramesMeta]]
+deps = ["Chain", "DataFrames", "MacroTools", "OrderedCollections", "Reexport", "TableMetadataTools"]
+git-tree-sha1 = "f912a2126c99ff9783273efa38b0181bfbf9d322"
+uuid = "1313f7d8-7da2-5740-9ea0-a2ca25f37964"
+version = "0.15.2"
 
 [[deps.DataStructures]]
 deps = ["Compat", "InteractiveUtils", "OrderedCollections"]
@@ -1786,6 +1797,12 @@ version = "0.2.2"
 deps = ["Dates"]
 uuid = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
 version = "1.0.0"
+
+[[deps.TableMetadataTools]]
+deps = ["DataAPI", "Dates", "TOML", "Tables", "Unitful"]
+git-tree-sha1 = "c0405d3f8189bb9a9755e429c6ea2138fca7e31f"
+uuid = "9ce81f87-eacc-4366-bf80-b621a3098ee2"
+version = "0.1.0"
 
 [[deps.TableOperations]]
 deps = ["SentinelArrays", "Tables", "Test"]

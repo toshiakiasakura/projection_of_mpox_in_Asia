@@ -2,6 +2,7 @@ using Accessors
 using CategoricalArrays
 using CSV
 using DataFrames
+using DataFramesMeta
 using Dates
 using Distributions
 using Glob
@@ -20,6 +21,8 @@ using TimeSeries
 using QuadGK
 using WeibullParetoDist
 using XLSX
+
+
 
 get_now_str() = @pipe now() |> Dates.format(_, "yyyymmdd_HHMMSS")
 
@@ -157,4 +160,13 @@ function read_observed_imp_data()::DataFrame
     df_obs = @pipe XLSX.readtable(path, "Sheet2", "A:F"; first_row=1) |>
                    DataFrame .|>
                    coalesce(_, 0)
+end
+
+"""Given dataframe, it tabulates to calculate the weekly numbers.
+"""
+function convert_to_weekly_case(df_::DataFrame, col::String)
+    tab = @pipe groupby(df_, col) |> combine(_, :count => sum)
+    sort!(tab, med_date)
+    tab_7d = weekly_num_cases(tab, col)
+    return tab_7d
 end

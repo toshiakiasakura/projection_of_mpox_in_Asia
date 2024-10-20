@@ -713,3 +713,140 @@ function imp_date_vis(imp_dates::DataFrame, df_mer::DataFrame; yticks=true, titl
     vspan!(pl, [Date(2024, 1, 1), Date(2025, 12, 31)], color=:black, alpha=0.1, label=:none)
     return pl
 end
+
+function save_inc_imp(vars::VisVars)
+    I_inc = get_metrix_from_each_sim(vars.path_sim_res, get_incidence_I; nmax=nmax)
+    JLD2.save_object(vars.path_inc, I_inc)
+    df_imp_prob = summarise_imp_prob(I_inc)
+    CSV.write(vars.path_imp, df_imp_prob)
+end
+
+function save_filtered_imp(vars::VisVars)
+    load_I_inc!(vars; check=true)
+    I_inc = filter_I_inc(vars.I_inc; tp="Korea", cut_off=10)
+    df_imp_prob = summarise_imp_prob(I_inc)
+    CSV.write(vars.path_imp_fil, df_imp_prob)
+end
+
+function gen_based_Sankey_diagram(path; nmax=10000)
+    path_objs = fetch_sim_paths(path)
+    df_sum = DataFrame()
+
+    n = minimum([length(path_objs), nmax])
+    @showprogress for i in 1:n
+        res = JLD2.load(path_objs[i])["res"]
+        global df = DataFrame(res.import_event)
+        if size(df)[1] == 0; continue; end
+
+        df[!, :sim_index] .= i
+        df[!, :export] = replace(df[:, :export_cntry], country_dict...)
+        df[!, :import] = replace(df[:, :import_cntry], country_dict...)
+        df[!, :ex_im] = df[!, :export] .* ": " .* df[!, :import]
+        cond = .!nonunique(df[:, [:sim_index, :export, :import]])
+        df = df[cond, :]
+
+        df[!, :gen_index] .= 100000
+        df[!, :seq_index] .= 100000
+
+        sort!(df, [:time])
+        n_row = size(df)[1]
+        seq_index = 1
+        pre_df = DataFrame()
+        for i in 1:n_row
+            if df[i, :export] == "Japan"
+                df[i, :gen_index] = 1
+                df[i, :seq_index] = seq_index
+                seq_index += 1
+                pre_df = vcat(pre_df, df[i, :] |> DataFrame)
+            else
+                cond = df[i, :import] .== pre_df[:, :import]
+                if any(cond); continue; end
+
+                r = filter( x-> x["import"] == df[i, :export], pre_df)[1, :]
+                df[i, :gen_index] = r.gen_index + 1
+                df[i, :seq_index] = r.seq_index
+                pre_df = vcat(pre_df, df[i, :] |> DataFrame)
+            end
+        end
+        df_sum = vcat(df_sum, pre_df)
+    end
+    return df_sum
+end
+
+# Filter datasets
+function filter_exp_gen(vars; cut_off=10, tp="Korea")
+    df_upd = CSV.read(vars.path_exp_imp_gen, DataFrame)
+    load_I_inc!(vars)
+    cond = filter_I_inc_cond(vars.I_inc; cut_off=cut_off, tp=tp)
+    println("Number of sims: ", sum(cond))
+    ind_lis = [i for i in 1:length(cond)][cond]
+    ind_fil = intersect(ind_lis, df_upd[:, :sim_index])
+    df_fil = filter(x -> x[:sim_index] in ind_fil, df_upd)
+    return df_fil
+end
+
+"""
+...
+Args
+- `n_sim`: Actual number of simulations.
+    After conditioned, the file number is not matched with simulation number.
+...
+"""
+function conditional_beta_SAR(vars::VisVars, cut_off, tp; n_sim=5000)
+    load_I_inc!(vars; check=true)
+    I_inc = vars.I_inc
+    cond = filter_I_inc_cond(I_inc; cut_off=cut_off, tp=tp)
+
+    # Prepare the simulated beta (whether or not values were saved or not.)
+    path_objs = fetch_sim_paths(vars.path_sim_res)
+    βs = [JLD2.load(path, "β") for path in path_objs]
+    println("Number of valid samples: ", length(βs))
+
+    βs_qs = quantile(βs, [0.025, 0.5, 0.975])
+    βs_r = round.(βs_qs, digits=2)
+    println("β : $(βs_r[2]) ($(βs_r[1]), $(βs_r[3]))")
+
+    SAR_qs = @pipe ( 1 .- exp.(-βs_qs)) .* 100 .|> round(_, digits=3)
+    println("SAR : $(SAR_qs[2]) ($(SAR_qs[1]), $(SAR_qs[3]))")
+end
+
+function weekly_incidence_figure(jpn_weekly::Matrix, title;
+        xlabel="", ylabel="",
+        ylim=[0.9, 30], yticks
+    )
+    ps = [0.25, 0.50, 0.75, 0.95]
+    #jpn_weekly = one_country_I_inc_to_weekly(I_inc[:, :, ind0_cnt])
+    q_dict = quantiles_over_week(jpn_weekly, ps)
+    n_week = size(jpn_weekly)[2]
+    pl = plot(
+        yaxis=:log10,
+        lw=4,
+        xlim=[0, 159],
+        ylim=ylim,
+        yticks=yticks,
+        titlefontsize=14,
+        legendfontsize=10,
+        legendtitlefontsize=10,
+        xtickfontsize=10,
+        ytickfontsize=10,
+        title=title,
+        xlabel=xlabel, ylabel=ylabel,
+        fmt=:png, dpi=200,
+        foreground_color_legend=nothing,
+        background_color_legend=nothing,
+    )
+    vspan!(pl, [-10,23], color=:black, alpha=0.2, label=:none)
+    for p in ps
+        lw = p == 0.5 ? 2 : 1
+        ls = p == 0.95 ? :dot : :solid
+
+        q = q_dict[p]
+        p_lab = Int64(p*100)
+        plot!(pl, 1:n_week, q .+ 1,
+            lw=lw, ls=ls, color="blue",
+            label="$(p_lab)th",
+            legend_title="Quantile",
+        )
+    end
+    pl
+end

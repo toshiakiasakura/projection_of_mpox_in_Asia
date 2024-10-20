@@ -473,3 +473,20 @@ function fit_β(;
     serialize(path, dict)
     return path
 end
+
+function show_traceplot(path; n_burn=2000)
+    res_dic = deserialize(path)
+    chn = res_dic["chn"]
+    # n_burn = length(chn)*0.1 |> floor |> Int64
+    chn = chn[(n_burn+1):10:end]
+    chn |> display
+    qs = quantile(chn; q=[0.025, 0.5, 0.975]) |> DataFrame
+    q025, q50, q975 = @pipe qs[1,2:4] |> values
+    q025_r, q50_r, q975_r = round.([q025, q50, q975], digits=2)
+    println("$(q50_r) ($(q025_r), $(q975_r))")
+    SAR_025 = round(1 - exp(-q025), digits=3)
+    SAR_50 = round(1 - exp(-q50), digits=3)
+    SAR_975 = round(1 - exp(-q975), digits=3)
+    println("$(SAR_50*100) ($(SAR_025*100), $(SAR_975*100))")
+    plot(chn, fmt=:png, left_margin=15Plots.pt, figtype=:png, bottom_margin=6Plots.mm) |> display
+end

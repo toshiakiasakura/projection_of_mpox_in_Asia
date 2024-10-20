@@ -168,47 +168,6 @@ plot([pl5_IP10, pl1_IP10, pl5_IP7, pl5_IP14]...,
 
 # ## Incidence curve
 
-function weekly_incidence_figure(jpn_weekly::Matrix, title;
-        xlabel="", ylabel="",
-        ylim=[0.9, 30], yticks
-    )
-    ps = [0.25, 0.50, 0.75, 0.95]
-    #jpn_weekly = one_country_I_inc_to_weekly(I_inc[:, :, ind0_cnt])
-    q_dict = quantiles_over_week(jpn_weekly, ps)
-    n_week = size(jpn_weekly)[2]
-    pl = plot(
-        yaxis=:log10,
-        lw=4,
-        xlim=[0, 159],
-        ylim=ylim,
-        yticks=yticks,
-        titlefontsize=14,
-        legendfontsize=10,
-        legendtitlefontsize=10,
-        xtickfontsize=10,
-        ytickfontsize=10,
-        title=title,
-        xlabel=xlabel, ylabel=ylabel,
-        fmt=:png, dpi=200,
-        foreground_color_legend=nothing,
-        background_color_legend=nothing,
-    )
-    vspan!(pl, [-10,23], color=:black, alpha=0.2, label=:none)
-    for p in ps
-        lw = p == 0.5 ? 2 : 1
-        ls = p == 0.95 ? :dot : :solid
-
-        q = q_dict[p]
-        p_lab = Int64(p*100)
-        plot!(pl, 1:n_week, q .+ 1,
-            lw=lw, ls=ls, color="blue",
-            label="$(p_lab)th",
-            legend_title="Quantile",
-        )
-    end
-    pl
-end
-
 # +
 # Load data
 sum_obj = load(path_rec)
