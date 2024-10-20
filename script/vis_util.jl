@@ -674,7 +674,7 @@ function imp_date_vis(imp_dates::DataFrame, df_mer::DataFrame; yticks=true, titl
     x_h = @pipe st_date .+ Day.(df_imp[:, :q95]) |> reshape(_, 1, :)
 
 
-    label1_lis = vcat(["","","","","",], label1, label1_non, ["" for i in 8:n_country])
+    label1_lis = vcat(["", "", "", "", "",], label1, label1_non, ["" for i in 8:n_country])
     cond = df_imp[:, :first_repo] .== Date(2025, 12, 31)
     color = @pipe [f == true ? blue : :blue for f in cond] |> reshape(_, 1, :)
     plot!(pl, [x_l; x_h], [ys'; ys'],
@@ -736,7 +736,9 @@ function gen_based_Sankey_diagram(path; nmax=10000)
     @showprogress for i in 1:n
         res = JLD2.load(path_objs[i])["res"]
         global df = DataFrame(res.import_event)
-        if size(df)[1] == 0; continue; end
+        if size(df)[1] == 0
+            continue
+        end
 
         df[!, :sim_index] .= i
         df[!, :export] = replace(df[:, :export_cntry], country_dict...)
@@ -760,9 +762,11 @@ function gen_based_Sankey_diagram(path; nmax=10000)
                 pre_df = vcat(pre_df, df[i, :] |> DataFrame)
             else
                 cond = df[i, :import] .== pre_df[:, :import]
-                if any(cond); continue; end
+                if any(cond)
+                    continue
+                end
 
-                r = filter( x-> x["import"] == df[i, :export], pre_df)[1, :]
+                r = filter(x -> x["import"] == df[i, :export], pre_df)[1, :]
                 df[i, :gen_index] = r.gen_index + 1
                 df[i, :seq_index] = r.seq_index
                 pre_df = vcat(pre_df, df[i, :] |> DataFrame)
@@ -806,14 +810,14 @@ function conditional_beta_SAR(vars::VisVars, cut_off, tp; n_sim=5000)
     βs_r = round.(βs_qs, digits=2)
     println("β : $(βs_r[2]) ($(βs_r[1]), $(βs_r[3]))")
 
-    SAR_qs = @pipe ( 1 .- exp.(-βs_qs)) .* 100 .|> round(_, digits=3)
+    SAR_qs = @pipe (1 .- exp.(-βs_qs)) .* 100 .|> round(_, digits=3)
     println("SAR : $(SAR_qs[2]) ($(SAR_qs[1]), $(SAR_qs[3]))")
 end
 
 function weekly_incidence_figure(jpn_weekly::Matrix, title;
-        xlabel="", ylabel="",
-        ylim=[0.9, 30], yticks
-    )
+    xlabel="", ylabel="",
+    ylim=[0.9, 30], yticks
+)
     ps = [0.25, 0.50, 0.75, 0.95]
     #jpn_weekly = one_country_I_inc_to_weekly(I_inc[:, :, ind0_cnt])
     q_dict = quantiles_over_week(jpn_weekly, ps)
@@ -835,13 +839,13 @@ function weekly_incidence_figure(jpn_weekly::Matrix, title;
         foreground_color_legend=nothing,
         background_color_legend=nothing,
     )
-    vspan!(pl, [-10,23], color=:black, alpha=0.2, label=:none)
+    vspan!(pl, [-10, 23], color=:black, alpha=0.2, label=:none)
     for p in ps
         lw = p == 0.5 ? 2 : 1
         ls = p == 0.95 ? :dot : :solid
 
         q = q_dict[p]
-        p_lab = Int64(p*100)
+        p_lab = Int64(p * 100)
         plot!(pl, 1:n_week, q .+ 1,
             lw=lw, ls=ls, color="blue",
             label="$(p_lab)th",

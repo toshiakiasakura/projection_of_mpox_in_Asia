@@ -481,7 +481,7 @@ function show_traceplot(path; n_burn=2000)
     chn = chn[(n_burn+1):10:end]
     chn |> display
     qs = quantile(chn; q=[0.025, 0.5, 0.975]) |> DataFrame
-    q025, q50, q975 = @pipe qs[1,2:4] |> values
+    q025, q50, q975 = @pipe qs[1, 2:4] |> values
     q025_r, q50_r, q975_r = round.([q025, q50, q975], digits=2)
     println("$(q50_r) ($(q025_r), $(q975_r))")
     SAR_025 = round(1 - exp(-q025), digits=3)

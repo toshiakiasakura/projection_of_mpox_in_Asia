@@ -47,7 +47,7 @@ vars5_IP14 = VisVars(
 )
 # -
 
-# ## Filter the file  
+# ## Filter the file
 
 vars5_IP10_ori = VisVars(
     path_sim_res = "../tmp_results/20240411_005101", # 50_000 without any conditions.
@@ -86,7 +86,7 @@ df_fil = filter_exp_gen(vars5_IP10)
 CSV.write(vars5_IP10.path_exp_imp_gen_fil, df_fil)
 
 # # Conditional params
-# Note: This section may cause an error if individual simulation data are lacking. 
+# Note: This section may cause an error if individual simulation data are lacking.
 
 include("model_intercountry.jl")
 include("vis_util.jl")
@@ -101,7 +101,3 @@ conditional_beta_SAR(vars1_IP10, cut_off, tp; n_sim=50_000)
 conditional_beta_SAR(vars5_IP7, cut_off, tp; n_sim=50_000)
 
 conditional_beta_SAR(vars5_IP14, cut_off, tp; n_sim=50_000)
-
-Number of valid samples: 626
-β : 1.27 (0.64, 2.65)
-SAR : 72.044 (47.159, 92.955)
