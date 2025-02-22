@@ -13,91 +13,144 @@
 #     name: julia-1.8
 # ---
 
-include("./util.jl")
+include("./utils.jl")
 include("./vis_util.jl")
 include("./model.jl")
 include("./model_intercountry.jl")
 
 # # Data preparation
-# Note: Files in `../tmp_results/**` is created in 2j, and those file size is around 900GB for Natsal 4w IP10 (leaving all simulation resutls), and around 15GB for other scenarios (leaving only conditioned results).
-
-path_flight = "../data/flight/selected_flight_matrix.csv"
-path_pop = "../data/pop_size_edit.csv"
-m_return, N0_MSM, country_dict = read_inter_country_data(path_flight, path_pop)
-
-# +
-vars1_IP10 = VisVars(
-    path_sim_res = "../tmp_results/20240411_003226", # 50_000, conditional only with β,
-    suffix = "path1_IP10"
-)
-
-vars5_IP10 = VisVars(
-    path_sim_res = "../tmp_results/20240411_005101_fil", # 50_000 with Korea condition.
-    suffix = "path5_IP10"
-)
-
-vars5_IP7 = VisVars(
-    path_sim_res = "../tmp_results/20240411_013445", # 50_000, only conditional one with β,
-    suffix = "path5_IP7"
-)
-
-vars5_IP14 = VisVars(
-    path_sim_res = "../tmp_results/20240411_005430", # 50_000, only conditional one with β,
-    suffix = "path5_IP14"
-)
-# -
+# These code requires international simulation code results, which were stored in directories specified in `DIR_INTERCNT_**` and not uploaded to the repository. Skip this section and go to `Visualisation results`. The remaining code can be executable since summarised statistics/quantities were uploaded.
 
 # ## Filter the file
 
-vars5_IP10_ori = VisVars(
-    path_sim_res = "../tmp_results/20240411_005101", # 50_000 without any conditions.
-    suffix = "path5_IP10"
-)
-path_rec = "../tmp_results/summary_quantity.jld2"
+# To reduce the computation burden later on, move eligible files to another directory.
+move_eligible_file_to_directory(VARS_SC1, VARS_SC1_FIL)
 
-move_eligible_file_to_directory(vars5_IP10_ori, "../tmp_results/20240411_005101_fil")
+record_summary_statistics(VARS_SC1)
 
-record_summary_statistics(vars5_IP10_ori, path_rec)
+# With the same conditions as the main analysis (fil_week = 24). 
+move_eligible_file_to_directory(VARS_SC1_D0415, VARS_SC1_D0415_FIL)
 
-record_summary_statistics(vars5_IP10_ori, "../tmp_results/summary_quantity_test.jld2"; nmax=50000)
+# With the same conditions as the main analysis (fil_week = 24). 
+record_summary_statistics(VARS_SC1_D0415)
 
-# # Save Inc and imp. prob.
+# ## Save Inc and imp. prob.
 
-nmax=50_000
+save_inc_imp(VARS_SC1_FIL)
+save_inc_imp(VARS_SC2_FIL)
+save_inc_imp(VARS_SC3_FIL)
+save_inc_imp(VARS_SC4_FIL)
 
-save_inc_imp(vars5_IP10)
+save_filtered_imp(VARS_SC1_FIL)
+save_filtered_imp(VARS_SC2_FIL)
+save_filtered_imp(VARS_SC3_FIL)
+save_filtered_imp(VARS_SC4_FIL)
 
-save_inc_imp(vars1_IP10)
-save_inc_imp(vars5_IP7)
-save_inc_imp(vars5_IP14)
-save_inc_imp(vars5_IP10)
+# For other sensitivity analyses.
+save_inc_imp(VARS_SC1_CUT1000_FIL)
+save_inc_imp(VARS_SC1_D0415_FIL)
+save_inc_imp(VARS_SC1_Y2023_FIL)
+save_inc_imp(VARS_SC1_ASSORT_FIL)
 
-save_filtered_imp(vars1_IP10)
-save_filtered_imp(vars5_IP7)
-save_filtered_imp(vars5_IP14)
-save_filtered_imp(vars5_IP10)
+# For predict 1st importation dates.
+save_inc_imp(VARS_SC1_10times_FIL)
+save_inc_imp(VARS_SC2_10times_FIL)
+save_inc_imp(VARS_SC3_10times_FIL)
+save_inc_imp(VARS_SC4_10times_FIL)
 
 # ## Generation based Sankey diagram, 0th (Japan), 1st, 2nd, 3rd.
 
-df_upd = gen_based_Sankey_diagram(vars5_IP10.path_sim_res)
-CSV.write(vars5_IP10.path_exp_imp_gen, df_upd)
+# TODO: Prepare country_dict only function.
+df_upd = gen_based_Sankey_diagram(VARS_SC1_FIL, INTER_SIM_BASE.country_dict)
+nothing
 
-df_fil = filter_exp_gen(vars5_IP10)
-CSV.write(vars5_IP10.path_exp_imp_gen_fil, df_fil)
-
-# # Conditional params
+# ## Conditional params
 # Note: This section may cause an error if individual simulation data are lacking.
-
-include("model_intercountry.jl")
-include("vis_util.jl")
 
 cut_off = 10
 tp = "Korea"
 
-conditional_beta_SAR(vars5_IP10, cut_off, tp; n_sim=50_000)
+conditional_beta_SAR(VARS_SC1_FIL, cut_off, tp)
 
-conditional_beta_SAR(vars1_IP10, cut_off, tp; n_sim=50_000)
+conditional_beta_SAR(VARS_SC2_FIL, cut_off, tp)
 
-conditional_beta_SAR(vars5_IP7, cut_off, tp; n_sim=50_000)
+conditional_beta_SAR(VARS_SC3_FIL, cut_off, tp)
 
-conditional_beta_SAR(vars5_IP14, cut_off, tp; n_sim=50_000)
+conditional_beta_SAR(VARS_SC4_FIL, cut_off, tp)
+
+conditional_beta_SAR(VARS_SC1_CUT1000_FIL, cut_off, tp)
+
+conditional_beta_SAR(VARS_SC1_D0415_FIL, cut_off, tp)
+
+conditional_beta_SAR(VARS_SC1_Y2023_FIL, cut_off, tp)
+
+conditional_beta_SAR(VARS_SC1_Y2023_FIL, cut_off, tp)
+
+conditional_beta_SAR(VARS_SC1_ASSORT_FIL, cut_off, tp)
+
+# # Visualisation of results
+
+# ## Sensitivity analysis: different sexual distribution and infectious period.
+
+var_lis =  [VARS_SC1_FIL,  VARS_SC2_FIL,  VARS_SC3_FIL,  VARS_SC4_FIL]
+load_I_inc!.(var_lis)
+nothing
+
+title1 = "Natsal 4-week \n IP of 10 days"
+title2 = "Natsal 1-year \n IP of 10 days"
+title3 = "Natsal 4-week \n IP of 7 days"
+title4 = "Natsal 4-week \n IP of 14 days"
+titles_natsal = [title1, title2, title3, title4]
+nothing
+
+include("./vis_util.jl")
+plot_imp_prob_global_fs_num_cnts(var_lis, titles_natsal; kwds=BAR_KWDS)
+
+# ## Different conditionality
+
+print_number_of_valid_sims(VARS_SC1)
+
+cut_off = 10
+title1 = "Unconditional\n"
+title2 = "≥$(cut_off) cases \nin Republic of Korea"
+title3 = "≥$(cut_off) cases \nin Taiwan"
+title4 = "≥$(cut_off) cases \nin China"
+titles_cond = [title1, title2, title3, title4]
+df_mer = plot_imp_prob_global_fs_num_cnts_large_data(
+    VARS_SC1, titles_cond;
+    sort_col=:prob1, kwds=BAR_KWDS)
+
+# ## Importation date
+
+var_lis_10times =  [VARS_SC1_10times_FIL,  VARS_SC2_10times_FIL,  VARS_SC3_10times_FIL,  VARS_SC4_10times_FIL]
+load_I_inc!.(var_lis_10times)
+
+plot_1st_importation_scenarios(var_lis_10times, titles_natsal)
+
+# ## Incidence curve
+
+plot_multiple_incidence_curve(VARS_SC1)
+
+# # Sensitivity analyses
+
+# ## Sensitivity analysis: Limit maximum k to be less than 1000
+
+plot(VARS_SC1_CUT1000_FIL)
+
+# ## Sensitivity analysis: behavioural change
+
+include("vis_util.jl")
+
+n_week = SCENARIO1_D0415.mixin["targetdata"] |> length
+plot_multiple_incidence_curve(VARS_SC1_D0415; 
+    ylim=[0.9, 6000], anno_pos_x=5, anno_pos_y=2000, exclude_obs_panel=true, vspan=[-10, n_week])
+
+plot(VARS_SC1_D0415_FIL; legend=(0.7, 0.1))
+
+# ## Sensitivity analysis: international flight volume in 2023
+
+plot(VARS_SC1_Y2023_FIL)
+
+# ## Sensitivity analysis: increased assortativity
+
+plot(VARS_SC1_ASSORT_FIL)
