@@ -8,9 +8,17 @@ tmp/
 tmp_afp/
 tmp_afp_fix/
 tmp_results/*/*.jld2
+tmp_results/*.jl
 tmp_fix_results/
+script/test*.ipynb
+script/OAG_analysis.jl
 data/flight/
+data/OAG_2023_original/
+data/OAG_2019_original/
+data/OAG_summary/
+data_AIMSS/
 .julia/
+
 
 .DS_Store
 

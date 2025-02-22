@@ -16,6 +16,7 @@ Our fitting process and simulations with meta-population model used the followin
 - Line list of mpox incidence in Japan: `/data/JPN_linelist/master_20230707.csv`.
 - International flight volume data: `/data/flight/selected_flight_matrix.csv` (not uploaded).
 - Population size in each country: `/data/pop_size_edit.csv`.
+- Original data of AIMSS can be found at https://data.mendeley.com/datasets/wsr6s6dp2j/1.
 
 ### How to run the code.
 Clone this repository and type `docker compose up` to
