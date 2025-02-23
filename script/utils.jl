@@ -5,6 +5,7 @@ using DataFrames
 using DataFramesMeta
 using Dates
 using Distributions
+using FStrings
 using Glob
 using HypothesisTests
 using JLD2
@@ -432,10 +433,37 @@ function convert_50comp_to_EricChow2016_bins(mat_e50, ks_1y)
 	return mat_e3
 end
 
-function increase_low_assortativity(mat::Matrix, α1::Float64, α23::Float64 = 1)
+function increase_low_assortativity(
+	mat::Matrix, α1::Float64, α23::Float64 = 1.; norm=true)
 	conds = [(1:11), (12:15), (16:33), (34:50)]
 	mat_e50_α = copy(mat)
 	mat_e50_α[conds[1], conds[1]] .*= α1
 	mat_e50_α[conds[2], conds[2]] .*= α23
-	return normalize(mat_e50_α, 1)
+	if norm == true
+		mat_e50_α = normalize(mat_e50_α, 1)
+	end
+	return mat_e50_α
+end
+
+function calculate_proportion_of_total_partnership(mat::Matrix)::Nothing
+    C_norm = sum(mat)
+    inds = [(1:11), (12:15), (16:50)]
+    p_part1 = sum(mat[inds[1], inds[1]])/C_norm
+    p_part2 = sum(mat[inds[2], inds[2]])/C_norm
+    p_part3 = sum(mat[inds[3], inds[3]])/C_norm
+    println(f"Percentage of total partnership for 1 to 1, 2-3 to 2-3, >4 to >4 pairs: {p_part1*100:.2f}%, {p_part2*100:.2f}%, {p_part3*100:.2f}%")
+end
+
+function calculate_proportion_of_individuals(mat::Matrix)::Nothing
+    inds = [(1:11), (12:15), (16:50)]
+
+    n_ind = sum(mat; dims=2) ./ KS_4W
+    C_ind = sum(n_ind)
+    p_inds = []
+    for ind in inds
+        mat_diag = mat[ind, ind]
+        n_ind = (sum(mat_diag; dims=2) ./KS_4W[ind]) |> sum
+        push!(p_inds, n_ind/C_ind)
+    end
+    println(f"Percentage of individuals for 1 to 1 and 2-3 to 2-3, >4 to >4 pairs: {p_inds[1]*100:.2f}%, {p_inds[2]*100:.2f}%, {p_inds[3]*100:.2f}%")
 end
