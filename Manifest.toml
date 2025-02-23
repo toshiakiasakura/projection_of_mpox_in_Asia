@@ -2,7 +2,7 @@
 
 julia_version = "1.8.3"
 manifest_format = "2.0"
-project_hash = "f15e260d1d3c38395e48d062cf8231719e12bc78"
+project_hash = "afaafc9164151ed68ab4ec4271bd65ec048dc7cd"
 
 [[deps.ADTypes]]
 git-tree-sha1 = "dcfdf328328f2645531c4ddebf841228aef74130"
@@ -532,6 +532,12 @@ deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "c6033cc3892d0ef5bb9cd29b7f2f0331ea5184ea"
 uuid = "f5851436-0d7a-5f13-b9de-f02708fd171a"
 version = "3.3.10+0"
+
+[[deps.FStrings]]
+deps = ["Printf"]
+git-tree-sha1 = "f43f4a841a815da6ce5664d09fed9327f30dee2a"
+uuid = "1e2663ae-5621-49ef-9c0a-672f85872094"
+version = "0.1.2"
 
 [[deps.FileIO]]
 deps = ["Pkg", "Requires", "UUIDs"]

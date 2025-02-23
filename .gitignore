@@ -8,7 +8,7 @@ tmp/
 tmp_afp/
 tmp_afp_fix/
 tmp_results/*/*.jld2
-tmp_results/*.jl
+tmp_results/*.jls
 tmp_fix_results/
 script/test*.ipynb
 script/OAG_analysis.jl
