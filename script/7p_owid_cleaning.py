@@ -16,11 +16,29 @@
 
 import datetime
 import polars as pl
+import matplotlib.pyplot as plt
 
 df = pl.read_csv("../data/owid-mpox-data-20250121.csv")
 df = df.with_columns(
     pl.col("date").str.to_datetime(format="%d/%m/%Y")
 )
+
+# # Asia 2022
+
+df2022 = df.filter(df["date"] < datetime(2023, 1, 1))
+df_global = df2022.filter(df2022["location"] == "World")
+df_Asia = df2022.filter(df2022["location"] == "Asia")
+df_Israel = df2022.filter(df2022["location"] == "Israel")
+
+n2022_Asia = df_Asia.tail(1)[0, "total_cases"]
+n2022_Israel = df_Israel.tail(1)[0, "total_cases"]
+print(f"{n2022_Israel / n2022_Asia * 100:.2f}% ({n2022_Israel}/{n2022_Asia})")
+
+plt.plot(df_Asia["date"], df_Asia["total_cases"])
+plt.plot(df_Israel["date"], df_Israel["total_cases"])
+plt.xlim([datetime(2022, 5, 1), datetime(2022,12,31)])
+
+# # Cumulative incidence for each year
 
 Asia_list = pl.read_csv("../data/pop_size_edit.csv")
 iso_cnts = Asia_list["iso_code"].to_list()
