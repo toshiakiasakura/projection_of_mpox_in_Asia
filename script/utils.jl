@@ -100,6 +100,21 @@ function R_eff_and_peak_relationship(I_cum::Float64,
 	return R
 end
 
+"""Converts daily case data in a DataFrame to weekly case data.
+"""
+function daily_cases_to_weekly(df::DataFrame, date_col::Symbol, case_col::Symbol)::DataFrame
+	if typeof(df[:, date_col]) != Vector{Date}
+		df[!, date_col] = Date.(df[:, date_col], "dd/mm/yyyy")
+	end
+    df[!, :week] = Dates.week.(df[:, date_col])
+    df[!,:year] = Dates.year.(df[:,date_col])
+
+    # Group by year and week and sum the cases
+    weekly_df = combine(groupby(df, [:year, :week]), case_col => sum => :weekly_cases)
+    return weekly_df
+end
+
+
 """
 	ABC_threshold_for_each_value
 

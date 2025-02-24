@@ -5,6 +5,7 @@ PATH_NIID = "../data/jpn_epicurve_NIID.csv"
 PATH_FLIGHT = "../data/flight/selected_flight_matrix.csv"
 PATH_POP = "../data/pop_size_edit.csv"
 PATH_ISO_CODE = "../data/iso2_iso3.csv"
+PATH_OWID = "../data/owid-mpox-data-20250121.csv"
 
 PATH_JPN_0707 = "../tmp_fix_results/mpox_japan_weekly_data_0707.csv"
 PATH_JPN_0415 = "../tmp_fix_results/mpox_japan_weekly_data_0415.csv"

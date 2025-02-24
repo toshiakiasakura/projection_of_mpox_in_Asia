@@ -872,9 +872,6 @@ function plot_multiple_incidence_curve(vars::VisVars;
 	Korea_ind = [i for (i, x) in enumerate(sum_obj["Korea_ind"]) if x == true]
 	jpn_weekly_Korea = jpn_weekly_all[Korea_ind, :]
 
-	# Japanese data
-	jpn_obs_curve = CSV.read(PATH_NIID, DataFrame)
-	n_jpn = nrow(jpn_obs_curve)
 
 	kwds = (xlim = [0, 159], ylim = ylim,
 		ylabel = "Weekly cases + 1",
@@ -891,9 +888,16 @@ function plot_multiple_incidence_curve(vars::VisVars;
 
 	# Panel C info
 	if exclude_obs_panel == false
-		pl3 = bar(jpn_obs_curve[:, :week_onset], jpn_obs_curve[:, :case] .+ 1;
+		# Prepare the mpox incidence in Japan.
+		df_jpn = @subset CSV.read(PATH_OWID, DataFrame) :location .== "Japan"
+		df_jpn_week = daily_cases_to_weekly(df_jpn, :date, :new_cases)
+		@subset!(df_jpn_week, :year .>= 2023)
+		@transform!(df_jpn_week, :epi_week = 1:nrow(df_jpn_week))
+		println("Epidemiological week is up to $(nrow(df_jpn_week))")
+
+		pl3 = bar(df_jpn_week[:, :epi_week], df_jpn_week[:, :weekly_cases] .+ 1;
 			bar_width = 1.0, label = "",
-			xlabel = "Epidemiological week from 1 January 2023 \n(symptom onset)",
+			xlabel = "Epidemiological week from 1 January 2023",
 			yaxis = :log10,
 			xtickfontsize = 10, ytickfontsize = 10,
 			kwds...,
