@@ -43,6 +43,11 @@ PK_4W_CUT1000 = begin
 	Pk_tmp[cond] .= 0
 	normalize(Pk_tmp)
 end
+PK_4W_REWIRED = begin
+	# Note: see 8j_sens_assortativity.jl for determining these values.
+	Pk_new, w1, w2 = create_rewired_degree_distribution(PK_4W, 0.485, 0.0)
+	Pk_new
+end
 
 """Get an index pointing at the mean degree of the Weibull distribution
 given one contact is taken randomly.

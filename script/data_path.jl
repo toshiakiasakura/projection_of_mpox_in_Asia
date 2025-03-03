@@ -17,7 +17,7 @@ PATH_SC3 = "../tmp_afp/natsal4w_posterior_inf7_20241021_073031.jls"
 PATH_SC4 = "../tmp_afp/natsal4w_posterior_inf14_20241021_070357.jls"
 PATH_SC1_CUT1000 = "../tmp_afp/natsal4w_posterior_inf10_cut1000_20241102_155228.jls"
 PATH_SC1_D0415 = "../tmp_afp/natsal4w_posterior_inf10_d0415_20241107_100824.jls"
-PATH_SC1_ASSORT = "../tmp_afp/natsal4w_posterior_inf10_assort_20250106_065636.jls"
+PATH_SC1_ASSORT = "../tmp_afp/natsal4w_posterior_inf10_assort_20250228_143847.jls"
 
 # Path for trajectories in Japan, from the estimated beta values.
 SIM_JPN_DIR_SC1 = "../tmp_afp/natsal4w_inf10_sim_jpn"
@@ -38,7 +38,7 @@ DIR_INTERCNT_SC1_CUT1000 = "../tmp_results/20241103_162220_sc1_cut1000"
 DIR_INTERCNT_SC1_D0415 = "../tmp_results/20241122_000749_sc1_d0415"
 DIR_INTERCNT_SC1_D0415_FIL = "$(DIR_INTERCNT_SC1_D0415)_fil"
 DIR_INTERCNT_SC1_Y2023_FIL = "../tmp_results/20241112_004906_sc1_y2023"
-DIR_INTERCNT_SC1_ASSORT_FIL = "../tmp_results/20250223_173604_sc1_assort_fil"
+DIR_INTERCNT_SC1_ASSORT_FIL = "../tmp_results/20250228_182302_sc1_assort_fil"
 
 DIR_INTERCNT_SC1_10times_FIL = "../tmp_results/20250218_000032_sc1_10times"
 DIR_INTERCNT_SC2_10times_FIL = "../tmp_results/20250218_060009_sc2_10times"

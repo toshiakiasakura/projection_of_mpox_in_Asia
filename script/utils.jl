@@ -434,7 +434,7 @@ function Newman_assortativity_coef(mat::Matrix)::Float64
 end
 
 function convert_50comp_to_EricChow2016_bins(mat_e50, ks_1y)
-	println("Note: using Natsal 1y")
+	println("----- Converting process info. -----")
 	ks_3m = ks_1y ./ 4
 	conds = [(ks_3m .< 2.0), (2.0 .<= ks_3m .< 4), (4 .<= ks_3m)]
 	mat_e3 = zeros(3, 3)
@@ -477,8 +477,38 @@ function calculate_proportion_of_individuals(mat::Matrix)::Nothing
     p_inds = []
     for ind in inds
         mat_diag = mat[ind, ind]
-        n_ind = (sum(mat_diag; dims=2) ./KS_4W[ind]) |> sum
+        n_ind = (sum(mat_diag; dims=2) ./KS_4W[ind]) |> sumj
         push!(p_inds, n_ind/C_ind)
     end
-    println(f"Percentage of individuals for 1 to 1 and 2-3 to 2-3, >4 to >4 pairs: {p_inds[1]*100:.2f}%, {p_inds[2]*100:.2f}%, {p_inds[3]*100:.2f}%")
+    println(f"Percentage of inkakdividuals for 1 to 1 and 2-3 to 2-3, >4 to >4 pairs: {p_inds[1]*100:.2f}%, {p_inds[2]*100:.2f}%, {p_inds[3]*100:.2f}%")
+end
+
+function create_rewired_degree_distribution(Pk::Vector, α1::Float64, α2::Float64
+	)::Tuple
+	inds = [(1:11), (12:15), (16:50)]
+	w1 = normalize(Pk[inds[1]], 1)
+	w2 = normalize(Pk[inds[2]], 1)
+	Pk_new = copy(PK_4W)
+	Pk_new[inds[1]] .-= α1 .* w1
+	Pk_new[inds[2]] .-= α2 .* w2
+	@test isapprox(sum(Pk_new), 1 - α1 - α2; atol=0.01)
+	normalize!(Pk_new, 1)
+	return (Pk_new, w1, w2)
+end
+
+function create_total_and_prop_partnership_dist(Pk_new, w1, w2, ks, α1, α2)::Tuple
+	Pk_new_r = normalize(Pk_new .* ks, 1)
+	Pk_new_w1 = normalize(Pk_new_r[inds1], 1)
+	Pk_new_w2 = normalize(Pk_new_r[inds2], 1)
+	mat_e50_prop = (1 - α1 - α2) .* (Pk_new .* ks) .* reshape(Pk_new_r, 1, 50)
+	mat_e50_homo1 = α1 .* (w1 .* ks[inds1]) .* reshape(Pk_new_w1, 1, length(w1))
+	mat_e50_homo2 = α2 .* (w2 .* ks[inds2]) .* reshape(Pk_new_w2, 1, length(w2))
+	mat_e50 = copy(mat_e50_prop)
+	mat_e50[inds1, inds1] += mat_e50_homo1
+	mat_e50[inds2, inds2] += mat_e50_homo2
+
+	# Note: this normalisation to mat_e50_prop is only for visualisation purpose.
+	normalize!(mat_e50_prop, 1)
+	normalize!(mat_e50, 1)
+	return (mat_e50_prop, mat_e50)
 end

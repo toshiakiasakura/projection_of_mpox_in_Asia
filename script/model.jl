@@ -127,8 +127,9 @@ end
 
 SCENARIO1_ASSORT = ScenarioParams(SCENARIO1;
 	file_prefix = "natsal4w_posterior_inf10_assort",
-	# proportion of MSM population is reduced to be 69.4%.
-	mixin = Dict("β_init" => 1.0, "red_msm_prop" => 0.694),
+	Pk = PK_4W_REWIRED,
+	# proportion of MSM population is reduced to be 51.5%. See 8j for details.
+	mixin = Dict("β_init" => 1.0, "red_msm_prop" => 0.515),
 )
 
 function set_values(model::NetworkSIRModel,

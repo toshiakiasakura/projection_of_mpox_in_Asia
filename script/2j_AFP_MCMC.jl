@@ -34,13 +34,11 @@ sc1 = fit_β(SCENARIO1; kwds...)
 sc2 = fit_β(SCENARIO2; kwds...)
 sc3 = fit_β(SCENARIO3; kwds...)
 sc4 = fit_β(SCENARIO4; kwds...)
-# 25201.544877 seconds (179.06 G allocations: 35.226 TiB, 11.89% gc time, 0.00% compilation time)
 sc1_cut1000 = fit_β(SCENARIO1_CUT1000; kwds...)
+sc1_assort = fit_β(SCENARIO1_ASSORT; kwds...)
 
 kwds = (days=SIM_DAY, iterations=22_000, nparticles=nparticles) 
 sc1_d0415 = fit_β(SCENARIO1_D0415; kwds...)
-# 27408.667971 seconds (186.56 G allocations: 36.808 TiB, 12.79% gc time, 0.01% compilation time)
-sc1_assort = fit_β(SCENARIO1_ASSORT; kwds...)
 
 # ## Obtain Jpana's trajectories
 
