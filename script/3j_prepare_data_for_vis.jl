@@ -19,7 +19,8 @@ include("./model.jl")
 include("./model_intercountry.jl")
 
 # # Data preparation
-# These code requires international simulation code results, which were stored in directories specified in `DIR_INTERCNT_**` and not uploaded to the repository. Skip this section and go to `Visualisation results`. The remaining code can be executable since summarised statistics/quantities were uploaded.
+# The repository does not contain intermediate files or result files from simulations due to a large file size. 
+# Fitting and simulations (which take hours to days) should be run beforehand to proceed with this file. 
 
 # ## Filter the file
 
@@ -60,7 +61,6 @@ save_inc_imp(VARS_SC4_10times_FIL)
 
 # ## Generation based Sankey diagram, 0th (Japan), 1st, 2nd, 3rd.
 
-# TODO: Prepare country_dict only function.
 df_upd = gen_based_Sankey_diagram(VARS_SC1_FIL, INTER_SIM_BASE.country_dict)
 nothing
 

@@ -188,14 +188,12 @@ function initialise_model(
 )::Tuple{InterNetworkParams, InterSEIRModel}
 	@unpack N0_cnt, C_gen, ks, Pk, n_country, n_comp = p_inter
 
-	# TODO: Degree distribution can be different depending on the analysis.
 	# Set degree distributions.
 	Nk_cnt = fill(-100, n_country, n_comp)
 	for i in 1:n_country
 		Nk_cnt[i, :] .= round.(Pk .* N0_cnt[i]; digits = 0) .|> Int64
 	end
 
-	# TODO: ks or Pk part would be differed if sexual distribution is different.
 	# Calculate a C_gen.
 	for i in 1:n_country
 		p_inter.C_gen[i] = sum(ks ./ 365 .* Nk_cnt[i, :])

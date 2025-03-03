@@ -64,7 +64,7 @@ kwds = (nparticles=nparticles, n_burn=n_burn)
 # ### Run inter-country simulations 
 
 include("model_intercountry.jl")
-# NOTE: This code are not executable since the flight data is not uploaded to the repository.
+# NOTE: This code are not executable since the UNWTO international travel data is not uploaded to the repository.
 INTER_SIM_BASE = return_inter_sim_base()
 
 @time begin run_and_save_intercountry_model(SIM_JPN_DIR_SC1, INTER_SIM_BASE;  Korea_cond=false) end 
@@ -81,11 +81,10 @@ INTER_SIM_BASE = return_inter_sim_base()
 
 @time begin run_and_save_intercountry_model(SIM_JPN_DIR_SC1_D0415, INTER_SIM_BASE; Korea_cond=false) end 
 
-# TODO: Check OAG results to be left here or not.
+# Note: Since OAG flight data is not uploaded, this code is not executable.
 INTER_SIM_2023 = return_inter_sim_base()
 r_mul = JLD2.load(PATH_OAG_RATIO)["r_mul"]
 INTER_SIM_2023.m_return = INTER_SIM_2023.m_return .* r_mul
-# 2450.774791 seconds (2.67 G allocations: 1.615 TiB, 15.35% gc time, 0.27% compilation time: 10% of which was recompilation)
 @time begin run_and_save_intercountry_model(SIM_JPN_DIR_SC1, INTER_SIM_2023; Korea_cond=true) end 
 nothing
 

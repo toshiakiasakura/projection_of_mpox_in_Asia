@@ -86,7 +86,7 @@ VARS_SC3_10times_FIL = VisVars(path_sim_res = DIR_INTERCNT_SC3_10times_FIL,
 	suffix = "path_sc3_10times_fil")
 VARS_SC4_10times_FIL = VisVars(path_sim_res = DIR_INTERCNT_SC4_10times_FIL,
 	suffix = "path_sc4_10times_fil")
+
 # Note: This file is not uploaded to the repository.
-# TODO: consider the removal of this path or not.
 PATH_OAG_RATIO = "../data/OAG_summary/OAG_ratio_2023to2019_5th_95th_truncated.jld2"
 

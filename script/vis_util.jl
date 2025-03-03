@@ -582,7 +582,6 @@ function quantiles_over_week(mat::Matrix, p::Vector{Float64})::Dict
 end
 
 function quantile_importation_dates(I_inc)
-	# TODO: Fetch only country dict
 	INTER_SIM_BASE = return_inter_sim_base()
 	country_dict = INTER_SIM_BASE.country_dict
 	df_quantile = DataFrame(Dict(:country => [], :q05 => [], :q50 => [], :q95 => []))
