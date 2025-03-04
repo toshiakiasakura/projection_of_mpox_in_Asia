@@ -16,6 +16,7 @@ data/flight/
 data/OAG_2023_original/
 data/OAG_2019_original/
 data/OAG_summary/
+fig/*.png
 .julia/
 
 

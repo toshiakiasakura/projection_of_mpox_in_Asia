@@ -28,7 +28,7 @@ function Japan_weekly_epicurve_2022_2023(df::DataFrame)
 		ytickfontsize = 10,
 		guidefontsize = 14,
 		xlabel = "Medical attendance date",
-		ylabel = "Weekly incidence",
+		ylabel = "Weekly cases",
 		foreground_color_legend = nothing,
 		background_color_legend = nothing,
 		left_margin = 15Plots.pt,
@@ -61,7 +61,7 @@ function visualise_sexual_partner_distribution(ks_4w, Pk_4w, ks_1y, Pk_1y)
 	)
 
 	pl1 = plot(x, ks_4w / 365;
-		ylabel = "Rate of new sexual partnership \nformulations per day",
+		ylabel = "Rate of sexual partnerships \nper day",
 		rate_kwds...)
 	annotate!(pl1, 5, 10, text("A", :black, :left, 18))
 
