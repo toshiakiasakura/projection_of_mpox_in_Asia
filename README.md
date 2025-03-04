@@ -31,4 +31,4 @@ It takes around 12hours to 2 days to complete each scenario in  `2j_AFP_MCMC.jl`
 This work is licensed under [MIT](/LICENSE).
 
 AIMSS data is from Cheung, Doug (2024), “2010 Asia Internet MSM Sex Survey (AIMSS)”, Mendeley Data, V1, doi: [10.17632/wsr6s6dp2j.1](https://doi.org/10.17632/wsr6s6dp2j.1),
-licensed under [CC By 4.0](https://creativecommons.org/licenses/by/4.0/).
+licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
