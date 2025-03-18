@@ -177,14 +177,14 @@ visualise_international_map <- function(
 }
 
 # +
-path <- "../tmp_results/imp_prob_path5_IP10_fil.csv"
+path <- "../tmp_results/imp_prob_path_sc1_fil.csv"
 df_imp <- clean_data(path, df_geo_info)
 df_imp %<>% mutate(imp_prob_percent = case_when(
     #imp_prob_percent == 100 ~ 70,
     TRUE ~ imp_prob_percent
 ))
 
-path_map <- "../fig/international_imp_map5_IP10_fil.png"
+path_map <- "../fig/international_imp_map_sc1_fil.png"
 visualise_international_map(path_map, df_imp, edges_for_plot,
     label_set = c("10%", "20%", "30%", "40%"),
     break_set = c(10, 20, 30, 40),

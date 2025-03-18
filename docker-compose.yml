@@ -13,6 +13,6 @@ services:
     volumes:
       - .:/home/jovyan/work
     environment:
-      - JULIA_NUM_THREADS=12
+      - JULIA_NUM_THREADS=4
       - JULIA_DEPOT_PATH=.julia::/opt/julia
     command: start.sh jupyter lab
