@@ -25,10 +25,9 @@ Then, you can run the code in `script` via Jupyter Lab.
 
 Run code in a sequence following the number of prefix of each file in `script` directory.
 It takes around 12hours to 2 days to complete each scenario in  `2j_AFP_MCMC.jl`, and this code will cause an error at an international simulation because of lacking international flight volume data.
-`3j_prepare_data_for_vis.jl` prepared the necessary files for the visualisation. Part of outputs from `3j` file were uploaded in `tmp_results`
+`3j_prepare_data_for_vis.jl` prepared the necessary files for the visualisation. Part of outputs from `3j` file were uploaded in `tmp_results`.
 
 ### License
-This work is licensed under [MIT](/LICENSE).
+This work is under [![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE).
 
-AIMSS data is from Cheung, Doug (2024), “2010 Asia Internet MSM Sex Survey (AIMSS)”, Mendeley Data, V1, doi: [10.17632/wsr6s6dp2j.1](https://doi.org/10.17632/wsr6s6dp2j.1),
-licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+AIMSS data is from Cheung, Doug (2024), “2010 Asia Internet MSM Sex Survey (AIMSS)”, Mendeley Data, V1, doi: [10.17632/wsr6s6dp2j.1](https://doi.org/10.17632/wsr6s6dp2j.1), under [![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/).
